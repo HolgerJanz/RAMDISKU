@@ -9,3 +9,5 @@ More information:
 http://www.mega-hz.de/Angebote/512K/512k.html (tfhh 512kSRAM)
 
 https://lotharek.pl/productdetail.php?id=56 (Ultimate 1MB)
+
+https://atari8.co.uk/firmware/ultimate-1mb/ (Ultimate 1MB Firmware)
