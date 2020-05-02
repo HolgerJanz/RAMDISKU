@@ -29,6 +29,7 @@ BUFRLO      = $0032
 BUFRHI      = $0033
 BFENLO      = $0034
 BFENHI      = $0035
+CRITIC      = $0042
 ZBNKSWTMSK  = $00D0
 ; 
 ; PAGE 2
@@ -98,7 +99,7 @@ USEDMASK    .byte $FF
             
 start
             jsr PRINT
-            .byte 'Ramdisk Ultimate vers54 by hjx',$9B,$FF
+            .byte 'Ramdisk Ultimate vers55 by hjx',$9B,$FF
        
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
@@ -252,7 +253,6 @@ ERRDRVNR    jsr PRINT
             .byte '  Error: No drive number specified',$9B,$FF
 PRNHLP
             jsr PRINT
-            .byte '  For Ultimate 1MB and tfhh 512kSRAM',$9B
             .byte '  Use: RAMDISKU Dx: [/EDF]',$9B
             .byte '    x - drive number for ramdisk',$9B
             .byte '    E - use 64K less extended memory',$9B
@@ -332,17 +332,16 @@ PRSPAREND
             .byte '  Error: No extra extended memory',$9B,$FF
             jmp PRNHLP
 BNKCNTOK
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; check for init driver and format
+;
 ; set format and ini by options
             bit CHKPAROPT
             bmi STRTINIFMT ; no options set default /DF
             lda #$FF
             sta CHKINIDRV
             sta CHKFRMT
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;
-; check for init driver and format
-;
 STRTINIFMT
 ; install driver requested
             bit CHKINIDRV
@@ -981,6 +980,7 @@ REAA018     cmp BNKCNT
             
             tay
             ldx PORTB
+            inc CRITIC
             sei
             lda #$00
             sta NMIEN
@@ -1003,6 +1003,7 @@ REAA006     sta BUFFERXX1,Y
             lda #$E0
             sta NMIEN
             cli
+            dec CRITIC 
              
             ldy #$00
 L368E
@@ -1018,11 +1019,12 @@ REAA007     lda BUFFERXX1,Y
             iny
             cpy DBYTLO
             bne L369B
-
+; restore bank
             stx PORTB
             lda #$E0
             sta NMIEN
             cli
+            dec CRITIC 
             
 RDSIOEND    ldy #$01
             bit $8BA0 ; $2c, ldy #$8b

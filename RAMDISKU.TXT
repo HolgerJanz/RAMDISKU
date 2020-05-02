@@ -1,0 +1,33 @@
+RAMDISKU - Ramdisk Driver for
+SpartaDOS 3
+
+RAMCARTU Dn: [/EDF]
+
+RAMCARTU is a ramdisk driver for
+SpartaDOS and RAMBO compatible RAM
+extensions from 64k to 1024k. It is
+derived form the original
+RD Ver 2.3 07-14-86 by FTe delivered
+originally with SpartaDOS 3. The
+main difference is that tfhh 512k
+SRAM, Rambo 1024k, and Compy Shop
+512k (e.g.Ultimate1MB) are supported
+in addition.
+
+Dx: specifies the drive
+number n that should be used for the
+ramdisk. With option /D the only the
+ramdisk driver will be installed.
+With option /F the ramdisk will only
+be formatted. Without any
+option the ramdisk will be
+formatted on demand. The option /E
+spares the first 4 banks to be
+compatible with 130XE and programs
+that uses the extended memory. This
+only works if the Basic bit (1) of
+PORTB is not used or you only work
+without Basic (always Basic off).
+
+RAMDISKU can be simultaneously used 
+with RAMCART.
