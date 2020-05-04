@@ -42,6 +42,7 @@ MEMLO       = $02E7
 DDEVIC      = $0300
 DUNIT       = $0301
 DCOMND      = $0302
+DSTATS		= $0303
 DBUFLO      = $0304
 DBUFHI      = $0305
 DBYTLO      = $0308
@@ -99,7 +100,7 @@ USEDMASK    .byte $FF
             
 start
             jsr PRINT
-            .byte 'Ramdisk Ultimate vers55 by hjx',$9B,$FF
+            .byte 'Ramdisk Ultimate vers56 by hjx',$9B,$FF
        
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
@@ -857,7 +858,9 @@ REAL003     lda #<BNKSAVBUF
 REAH003     lda #>BNKSAVBUF
             sta MEMLO+1
             rts
+;
 ; new DOSVEC for RAMDISK device
+;
 RAMDSIO     lda DDEVIC
             cmp #$31
             bne JMPSIO
@@ -1027,7 +1030,8 @@ REAA007     lda BUFFERXX1,Y
             dec CRITIC 
             
 RDSIOEND    ldy #$01
-            bit $8BA0 ; $2c, ldy #$8b
+            bit $8BA0 ; $2c, ldy #$8b ; error #NAK
+			sty DSTATS
             tya
             rts
             
