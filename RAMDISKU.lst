@@ -1,4 +1,5 @@
-mads 1.9.9
+mads 2.0.9
+Source: /Users/holgerjanz/Documents/ATARI-XL/Projects/RAMDISKU/RAMDISKU.ASM
      1 				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
      2 				;
      3 				; RAMDISK ULTIMATE for SpartaDOS 3 for tfhh SRAM512k and U1MB
@@ -854,9 +855,9 @@ mads 1.9.9
    853 3781 20 00 00		JSRDOSINI   jsr $0000
    854
    855 3784			SETMEMLO    
-   856 3784 A9 17		REAL003     lda #<BNKSAVBUF
+   856 3784 A9 17		REAL003     lda #<REAEND
    857 3786 8D E7 02		            sta MEMLO
-   858 3789 A9 3A		REAH003     lda #>BNKSAVBUF
+   858 3789 A9 3A		REAH003     lda #>REAEND
    859 378B 8D E8 02		            sta MEMLO+1
    860 378E 60			            rts
    861 				;

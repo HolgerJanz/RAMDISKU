@@ -853,9 +853,9 @@ REABEGIN
 JSRDOSINI   jsr $0000
 
 SETMEMLO    
-REAL003     lda #<BNKSAVBUF
+REAL003     lda #<REAEND
             sta MEMLO
-REAH003     lda #>BNKSAVBUF
+REAH003     lda #>REAEND
             sta MEMLO+1
             rts
 ;
@@ -979,8 +979,7 @@ L3656       pla
 REAA021     adc SPARBNKS
 REAA018     cmp BNKCNT
             bcs RDSIOEND+3
-; switch bank
-            
+; switch bank          
             tay
             ldx PORTB
             inc CRITIC
