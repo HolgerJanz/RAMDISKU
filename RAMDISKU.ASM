@@ -2,7 +2,6 @@
 ;
 ; RAMDISK ULTIMATE for SpartaDOS 3 for tfhh SRAM512k and U1MB
 ;   COMPY and RAMBO up to 1024k
-;   by hjx (x) 2020
 ;
 ; Previous work RD/RAMDISK.COM for SpartaDOS 3 by FTe
 ;   RD Ver 2.3 07-14-86 (c) 1984 by FTe
@@ -99,9 +98,6 @@ RB256TEST2  .byte $00
 USEDMASK    .byte $FF
             
 start
-            jsr PRINT
-            .byte 'Ramdisk Ultimate vers56 by hjx',$9B,$FF
-       
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
 ; determine extended memory
@@ -161,14 +157,14 @@ CPYR1M      lda BNKSWTMSKR1,X
 ;            
 start_rambo
             jsr PRINT
-            .byte '  Found Rambo ',$FF
+            .byte 'Found Rambo ',$FF
             jmp start_check
 
 start_compy
             cpx #$04
             bcc start_check
             jsr PRINT
-            .byte '  Found Compy ',$FF
+            .byte 'Found Compy ',$FF
 
 start_check
 ; check bank count
@@ -181,7 +177,7 @@ start_check
             jmp EXT_END
 ; no banks            
 EXT_NO      jsr PRINT
-            .byte '  Error: No extended memory',$9B,$FF
+            .byte 'Error: No extended memory',$9B,$FF
             jmp PRNHLP
             
 EXT_192     cpx #$0C
@@ -251,9 +247,10 @@ EXT_END     ldy #SD_BUFOFF
             jmp PRSPARM
 ; no parameter -> error
 ERRDRVNR    jsr PRINT
-            .byte '  Error: No drive number specified',$9B,$FF
+            .byte 'Error: No drive specified',$9B,$FF
 PRNHLP
             jsr PRINT
+            .byte 'Ramdisk Ultimate 2022-02-20',$9B
             .byte '  Use: RAMDISKU Dx: [/EDF]',$9B
             .byte '    x - drive number for ramdisk',$9B
             .byte '    E - use 64K less extended memory',$9B
@@ -312,7 +309,7 @@ PRSPARNXT2  cmp #'F'
             sta CHKFRMT
             jmp PRSPARLOOP
 PARAMERR    jsr PRINT
-            .byte '  Error: Wrong parameter specified',$9B,$FF
+            .byte 'Error: Wrong parameter specified',$9B,$FF
             jmp PRNHLP
 
 CHKPAROPT   .byte $00
@@ -325,12 +322,12 @@ PRSPAREND
             lda SPARBNKS
             beq BNKCNTOK
             jsr PRINT
-            .byte '  Use 64K less extended memory',$9B,$FF
+            .byte 'Use 64K less extended memory',$9B,$FF
             lda BNKCNT
             cmp #$04
             bne BNKCNTOK
             jsr PRINT
-            .byte '  Error: No extra extended memory',$9B,$FF
+            .byte 'Error: No extra extended memory',$9B,$FF
             jmp PRNHLP
 BNKCNTOK
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -408,7 +405,7 @@ REAH002     lda #>RAMDSIO
 REAA003     jsr SETMEMLO      ;realloc $33DB
 ; message
             jsr PRINT
-            .byte '  Driver installed',$9B,$FF
+            .byte 'Driver installed',$9B,$FF
             rts
 
 
@@ -566,7 +563,7 @@ L349B       lda RDMAIN,X
             cli
 ; write message
             jsr PRINT
-            .byte '  Ramdisk formatted',$9B,$FF
+            .byte 'Ramdisk formatted',$9B,$FF
             rts
 ; set VTOC            
 FILLHSEC    ldy #$00
@@ -766,7 +763,7 @@ BNKRESTR    lda (ZBNKSWTMSK),Y
 WAITSYNC    lda RTCLOK+2
 WAITLOOP    cmp RTCLOK+2
             beq WAITLOOP
-            rts            
+            rts
 SSDMCTL     .byte $00
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -983,6 +980,10 @@ REAA018     cmp BNKCNT
             tay
             ldx PORTB
             inc CRITIC
+; sync with vertical blank
+            lda RTCLOK+2
+WAITLOOP2   cmp RTCLOK+2
+            beq WAITLOOP2
             sei
             lda #$00
             sta NMIEN
